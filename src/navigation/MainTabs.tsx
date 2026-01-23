@@ -1,12 +1,29 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // or FontAwesome, etc.
-
+import MaterialIcons from '@react-native-vector-icons/material-icons';
 import HomeScreen from '../features/home/screens/HomeScreen';
 import ShopScreen from '../features/home/screens/ShopScreen';
 import EatScreen from '../features/home/screens/EatScreen';
 import CartScreen from '../features/home/screens/CartScreen';
 import ProfileScreen from '../features/home/screens/ProfileScreen';
+
+// Define allowed icon names for your tabs (type-safe!)
+type TabIconName = 
+  | 'home' 
+  | 'shopping-cart' 
+  | 'restaurant' 
+  | 'shopping-bag' 
+  | 'person' 
+  | 'help';  // fallback
+
+// Optional: Map route names to icon names (even better type safety)
+const routeToIcon: Record<string, TabIconName> = {
+  Home: 'home',
+  Shop: 'shopping-cart',
+  Eat: 'restaurant',
+  Cart: 'shopping-bag',
+  Profile: 'person',
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -15,18 +32,12 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          let iconName: string;
+          // Safe lookup — TypeScript knows it's TabIconName
+          const iconName = routeToIcon[route.name] ?? 'help';
 
-          if (route.name === 'Home') iconName = 'home';
-          else if (route.name === 'Shop') iconName = 'shopping-cart';
-          else if (route.name === 'Eat') iconName = 'restaurant';
-          else if (route.name === 'Cart') iconName = 'shopping-bag';
-          else if (route.name === 'Profile') iconName = 'person';
-          else iconName = 'help';
-
-          return <Icon name={iconName} size={size} color={color} />;
+          return <MaterialIcons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#FF6347', // tomato color theme
+        tabBarActiveTintColor: '#FF6347',
         tabBarInactiveTintColor: 'gray',
         headerShown: false,
       })}
