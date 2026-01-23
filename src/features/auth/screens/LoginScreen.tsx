@@ -8,36 +8,44 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  ActivityIndicator,
   Alert,
 } from 'react-native';
-import { useAppDispatch } from '../../../redux/hooks';
-import { loginSuccess } from '../../../redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { loginSuccess, loginFailure, loginStart } from '../../../redux/slices/authSlice';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen() {
   const [phoneOrEmail, setPhoneOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
+  const { loading, error } = useAppSelector((state) => state.auth);
   const navigation = useNavigation();
 
   const handleLogin = () => {
     // Very basic validation (improve later)
-    if (!phoneOrEmail || !password) {
+    if (!phoneOrEmail.trim()) {
       Alert.alert('Error', 'Please enter phone/email and password');
       return;
     }
+    if (!password) {
+      Alert.alert('Error', 'Please enter password');
+      return;
+    }
 
-    // For testing: fake successful login
-    // In real app → call API → save token → get user data
-    dispatch(
-      loginSuccess({
-        name: 'Rohit Test',
-        email: phoneOrEmail,
-      })
-    );
+    dispatch(loginStart());
 
-    Alert.alert('Success', 'Logged in! (fake for now)');
-    // Navigation will auto-redirect because isAuthenticated changed
+    setTimeout(() => {
+      const fakeResponse = {
+        user: { name: 'Rohit Test', email: phoneOrEmail },
+        token: 'fake-jwt-token',
+      };
+      dispatch(loginSuccess(fakeResponse));
+      AsyncStorage.getItem('persist:root').then(value => {
+        console.log('Saved persist:root:', value);
+      });
+    }, 1500);
   };
 
   return (
@@ -48,6 +56,8 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <Text style={styles.title}>Welcome to ShopEat</Text>
         <Text style={styles.subtitle}>Login to continue</Text>
+
+        {error && <Text style={styles.errorText}>{error}</Text>}
 
         <TextInput
           style={styles.input}
@@ -67,8 +77,16 @@ export default function LoginScreen() {
           autoCapitalize="none"
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -137,5 +155,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 8,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  buttonDisabled: {
+    backgroundColor: '#FF8C7A',
+    opacity: 0.7,
   },
 });

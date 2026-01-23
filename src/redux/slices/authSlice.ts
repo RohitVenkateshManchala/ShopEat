@@ -1,29 +1,50 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 interface AuthState {
   isAuthenticated: boolean;
-  user: null | { name: string; email: string }; // expand later
+  user: null | { name: string; email: string };
+  token: string | null;
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false, // change to true to test MainTabs directly
   user: null,
+  token: null,
+  loading: false,
+  error: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginSuccess(state, action: PayloadAction<{ name: string; email: string }>) {
+    loginStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    loginSuccess(state, action: PayloadAction<{ user: { name: string; email: string }; token: string }>) {
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.loading = false;
+      state.error = null;
+    },
+    loginFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
     },
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
+      state.token = null;
+      state.loading = false;
+      state.error = null;
     },
   },
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout } = authSlice.actions;
 export default authSlice.reducer;
