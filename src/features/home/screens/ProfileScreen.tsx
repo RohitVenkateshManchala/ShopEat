@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import MaterialIcons from '@react-native-vector-icons/material-icons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useAppDispatch } from '../../../redux/hooks';
 import { logout } from '../../../redux/slices/authSlice';
 import { persistor } from '../../../redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ProfileScreen() {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   const handleLogout = () => {
     Alert.alert(
