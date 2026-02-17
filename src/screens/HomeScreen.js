@@ -8,7 +8,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
 
-  const onRefresh = () =>{
+  const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
       setProducts([...productData].sort(() => Math.random() - 0.5));
@@ -32,6 +32,9 @@ export default function HomeScreen() {
         refreshing={refreshing}
         onRefresh={onRefresh}
         showsVerticalScrollIndicator={false}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "space-between" }}
+
       />
     </View>
   );
@@ -41,6 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
+    paddingHorizontal: 8,
   },
   searchInput: {
     backgroundColor: "#fff",

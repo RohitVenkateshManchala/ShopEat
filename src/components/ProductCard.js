@@ -17,33 +17,34 @@ export default function ProductCard({ item }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#fff",
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 12,
-    overflow: "hidden",
-    elevation: 4,
-  },
-  image: {
-    width: "100%",
-    height: 180,
-  },
-  infoContainer: {
-    padding: 12,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  price: {
-    marginTop: 4,
-    fontSize: 15,
-    color: "#007bff",
-  },
-  rating: {
-    marginTop: 4,
-    fontSize: 14,
-    color: "#888",
-  },
+    card: {
+        backgroundColor: "#fff",
+        borderRadius: 12,
+        overflow: "hidden",
+        elevation: 4,
+        marginBottom: 16,
+        flex: 1,
+        marginHorizontal: 8,
+    },
+    image: {
+        width: "100%",
+        height: 140,
+    },
+    infoContainer: {
+        padding: 12,
+    },
+    title: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    price: {
+        marginTop: 4,
+        fontSize: 15,
+        color: "#007bff",
+    },
+    rating: {
+        marginTop: 4,
+        fontSize: 14,
+        color: "#888",
+    },
 });
