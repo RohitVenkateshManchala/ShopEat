@@ -7,9 +7,12 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 export default function ProductDetailsScreen({ route }) {
   const { product } = route.params;
+  const { addToCart } = useContext(CartContext);
 
   return (
     <ScrollView style={styles.container}>
@@ -25,7 +28,7 @@ export default function ProductDetailsScreen({ route }) {
           It offers excellent performance and durability.
         </Text>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => addToCart(product)}>
           <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>

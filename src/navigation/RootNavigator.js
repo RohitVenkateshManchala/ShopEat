@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AuthStack from "./AuthStack";
 import MainTabs from "./MainTabs";
+import CheckoutScreen from "../screens/CheckOutScreen"
+import SuccessScreen from "../screens/SuccessScreen";
 import { AuthContext } from "../context/AuthContext";
 import { ActivityIndicator, View } from "react-native";
 
@@ -21,7 +23,11 @@ export default function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {userToken ? (
-        <Stack.Screen name="Main" component={MainTabs} />
+        <>
+          <Stack.Screen name="Main" component={MainTabs} />
+          <Stack.Screen name="Checkout" component={CheckoutScreen} />
+          <Stack.Screen name="Success" component={SuccessScreen} />
+        </>
       ) : (
         <Stack.Screen name="Auth" component={AuthStack} />
       )}
