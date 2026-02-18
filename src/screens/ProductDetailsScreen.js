@@ -12,8 +12,11 @@ import { CartContext } from "../context/CartContext";
 
 export default function ProductDetailsScreen({ route }) {
   const { product } = route.params;
-  const { addToCart } = useContext(CartContext);
+  const { cartItems, addToCart, increaseQty, decreaseQty } =
+    useContext(CartContext);
 
+
+  const existingItem = cartItems.find((item) => item.id === product.id);
   return (
     <ScrollView style={styles.container}>
       <Image source={{ uri: product.image }} style={styles.image} />
@@ -28,9 +31,32 @@ export default function ProductDetailsScreen({ route }) {
           It offers excellent performance and durability.
         </Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => addToCart(product)}>
-          <Text style={styles.buttonText}>Add to Cart</Text>
-        </TouchableOpacity>
+        {!existingItem ? (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => addToCart(product)}
+          >
+            <Text style={styles.buttonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.qtyContainer}>
+            <TouchableOpacity
+              onPress={() => decreaseQty(product.id)}
+            >
+              <Text style={styles.qtyButton}>−</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.qtyText}>
+              {existingItem.quantity}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => increaseQty(product.id)}
+            >
+              <Text style={styles.qtyButton}>+</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -78,4 +104,40 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
+  addButton: {
+  backgroundColor: "#007bff",
+  padding: 15,
+  borderRadius: 8,
+  alignItems: "center",
+  marginTop: 20,
+},
+
+addButtonText: {
+  color: "#fff",
+  fontWeight: "bold",
+  fontSize: 16,
+},
+
+qtyContainer: {
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: "#007bff",
+  borderRadius: 8,
+  marginTop: 20,
+  paddingVertical: 10,
+},
+
+qtyButton: {
+  fontSize: 24,
+  color: "#fff",
+  paddingHorizontal: 20,
+},
+
+qtyText: {
+  fontSize: 18,
+  color: "#fff",
+  fontWeight: "bold",
+},
+
 });

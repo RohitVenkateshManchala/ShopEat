@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native
 import { CartContext } from "../context/CartContext";
 
 export default function CheckoutScreen({ navigation }) {
-  const { cartItems, totalPrice } = useContext(CartContext);
+  const { cartItems, totalPrice, clearCart } = useContext(CartContext);
 
   return (
     <View style={styles.container}>
@@ -26,7 +26,10 @@ export default function CheckoutScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.placeOrder}
-        onPress={() => navigation.navigate("Success")}
+        onPress={() => {
+          clearCart();
+          navigation.replace("Success")
+        }}
       >
         <Text style={styles.placeOrderText}>Place Order</Text>
       </TouchableOpacity>

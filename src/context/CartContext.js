@@ -1,9 +1,41 @@
-import React, { createContext, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const storedCart = await AsyncStorage.getItem("CART_ITEMS");
+        if (storedCart) {
+          setCartItems(JSON.parse(storedCart));
+        }
+      } catch (error) {
+        console.log("Error loading cart:", error);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  useEffect(() => {
+    const saveCart = async () => {
+      try {
+        await AsyncStorage.setItem(
+          "CART_ITEMS",
+          JSON.stringify(cartItems)
+        );
+      } catch (error) {
+        console.log("Error saving cart:", error);
+      }
+    };
+
+    saveCart();
+  }, [cartItems]);
+
 
   const addToCart = (product) => {
     const existingItem = cartItems.find(
@@ -50,6 +82,10 @@ export default function CartProvider({ children }) {
     0
   );
 
+  const clearCart = () =>{
+    setCartItems([]);
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -58,6 +94,7 @@ export default function CartProvider({ children }) {
         increaseQty,
         decreaseQty,
         totalPrice,
+        clearCart,
       }}
     >
       {children}
