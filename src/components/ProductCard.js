@@ -3,10 +3,15 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { CartContext } from "../context/CartContext";
+import { WishlistContext } from "../context/WishlistContext";
 
-export default function ProductCard({ item }) {
+export default function ProductCard({ item, allProducts }) {
     const { cartItems, addToCart, increaseQty, decreaseQty } =
         useContext(CartContext);
+
+    const { isInWishlist, toggleWishlist } = useContext(WishlistContext);
+
+    const inWishlist = isInWishlist(item.id);
 
     const navigation = useNavigation();
 
@@ -18,14 +23,29 @@ export default function ProductCard({ item }) {
         <TouchableOpacity
             style={styles.card}
             onPress={() =>
-                navigation.navigate("ProductDetails", { product: item })
+                navigation.navigate("ProductDetails", {
+                    product: item,
+                    allProducts: allProducts,
+                })
             }
         >
             <Image
                 source={{ uri: item.thumbnail }}
                 style={styles.image}
             />
-
+            <TouchableOpacity
+                style={styles.wishlistIcon}
+                onPress={(e) => {
+                    e.stopPropagation();
+                    toggleWishlist(item);
+                }}
+            >
+                <Ionicons
+                    name={inWishlist ? "heart" : "heart-outline"}
+                    size={22}
+                    color={inWishlist ? "red" : "#000"}
+                />
+            </TouchableOpacity>
             <View style={styles.infoContainer}>
                 <Text style={styles.title} numberOfLines={1}>
                     {item.title}
@@ -129,5 +149,14 @@ const styles = StyleSheet.create({
     qtyText: {
         fontSize: 16,
         marginHorizontal: 5,
+    },
+    wishlistIcon: {
+        position: "absolute",
+        top: 10,
+        right: 10,
+        backgroundColor: "#fff",
+        padding: 6,
+        borderRadius: 20,
+        elevation: 4,
     },
 });

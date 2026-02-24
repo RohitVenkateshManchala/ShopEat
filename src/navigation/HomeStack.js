@@ -2,6 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import ProductDetailsScreen from "../screens/ProductDetailsScreen";
+import HeaderCartButton from "../components/HeaderCartButton";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ export default function HomeStack() {
       <Stack.Screen
         name="ProductDetails"
         component={ProductDetailsScreen}
-        options={{ title: "Product Details" }}
+        options={{ title: "Product Details", headerRight: () => <HeaderCartButton /> }}
       />
     </Stack.Navigator>
   );

@@ -26,7 +26,7 @@ export default function HomeScreen() {
       const data = await fetchProducts(LIMIT, isRefresh ? 0 : page * LIMIT);
       if (isRefresh) {
         console.log(data, "EFFE");
-        
+
         setProducts(data.products);
         setPage(1);
       } else {
@@ -55,7 +55,7 @@ export default function HomeScreen() {
       <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ProductCard item={item} />}
+        renderItem={({ item }) => <ProductCard item={item} allProducts={products} />}
         refreshing={loading}
         onRefresh={() => loadProducts(true)}
         onEndReached={() => loadProducts()}
