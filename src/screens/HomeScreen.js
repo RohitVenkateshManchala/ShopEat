@@ -9,6 +9,10 @@ import {
 } from "react-native";
 import ProductCard from "../components/ProductCard";
 import { fetchProducts } from "../services/api";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPOGRAPHY } from "../theme/typography";
 
 export default function HomeScreen() {
   const [products, setProducts] = useState([]);
@@ -45,17 +49,35 @@ export default function HomeScreen() {
   }, []);
   const filteredProducts = products.filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Search products..."
-        value={search}
-        onChangeText={setSearch}
-        style={styles.searchInput}
-      />
+    <SafeAreaView style={styles.container}>
+      {/* ===== HEADER ===== */}
+      <View style={styles.header}>
+        <Text style={styles.heading}>Discover</Text>
+        <Text style={styles.subHeading}>Find your style</Text>
+      </View>
+
+      {/* ===== SEARCH ===== */}
+      <View style={styles.searchWrapper}>
+        <TextInput
+          placeholder="Search products..."
+          placeholderTextColor={COLORS.textSecondary}
+          value={search}
+          onChangeText={setSearch}
+          style={styles.searchInput}
+        />
+      </View>
+
+      {/* ===== PRODUCT GRID ===== */}
       <FlatList
+        contentContainerStyle={{
+          paddingHorizontal: SPACING.md,
+          paddingBottom: 120,
+        }}
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ProductCard item={item} allProducts={products} />}
+        renderItem={({ item }) => (
+          <ProductCard item={item} allProducts={products} />
+        )}
         refreshing={loading}
         onRefresh={() => loadProducts(true)}
         onEndReached={() => loadProducts()}
@@ -65,27 +87,51 @@ export default function HomeScreen() {
         columnWrapperStyle={{ justifyContent: "space-between" }}
         ListFooterComponent={
           loading && page > 0 ? (
-            <ActivityIndicator size="small" style={{ marginVertical: 10 }} />
+            <ActivityIndicator
+              size="small"
+              color={COLORS.primary}
+              style={{ marginVertical: SPACING.md }}
+            />
           ) : null
         }
-
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
-    paddingHorizontal: 8,
+    backgroundColor: COLORS.background,
   },
+
+  header: {
+    paddingHorizontal: SPACING.lg,
+  },
+
+  heading: {
+    ...TYPOGRAPHY.h1,
+    color: COLORS.textPrimary,
+  },
+
+  subHeading: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.textSecondary,
+    marginTop: 4,
+  },
+
+  searchWrapper: {
+    marginHorizontal: SPACING.lg,
+    marginTop: SPACING.md,
+    marginBottom: SPACING.md,
+    backgroundColor: COLORS.surface,
+    borderRadius: 30,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+  },
+
   searchInput: {
-    backgroundColor: "#fff",
-    margin: 16,
-    padding: 12,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
+    color: COLORS.textPrimary,
+    ...TYPOGRAPHY.body,
   },
 });

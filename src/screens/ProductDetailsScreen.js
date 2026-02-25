@@ -13,6 +13,7 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { COLORS } from "../theme/colors";
 
 const { width } = Dimensions.get("window");
 
@@ -242,134 +243,189 @@ export default function ProductDetailsScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.background,
   },
+
   image: {
     width: width,
-    height: 300,
+    height: 340,
+    backgroundColor: COLORS.surface,
   },
+
   infoContainer: {
-    padding: 16,
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 12,
   },
+
   title: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "700",
+    color: COLORS.textPrimary,
+    lineHeight: 30,
   },
+
   brand: {
-    marginTop: 4,
-    color: "#555",
-  },
-  price: {
-    fontSize: 20,
-    color: "#007bff",
-    marginTop: 8,
-  },
-  discount: {
-    marginTop: 4,
-    color: "green",
-    fontWeight: "bold",
-  },
-  rating: {
-    marginTop: 4,
-  },
-  stock: {
     marginTop: 6,
-    color: "red",
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    letterSpacing: 0.5,
+  },
+
+  price: {
+    fontSize: 26,
+    fontWeight: "700",
+    color: COLORS.primary,
+    marginTop: 14,
+  },
+
+  discount: {
+    marginTop: 6,
+    color: "#16A34A",
+    fontWeight: "600",
+    fontSize: 14,
+  },
+
+  rating: {
+    marginTop: 8,
+    fontSize: 14,
+    color: COLORS.textSecondary,
+  },
+
+  stock: {
+    marginTop: 8,
+    fontSize: 13,
+    color: "#DC2626",
     fontWeight: "600",
   },
+
   description: {
-    marginTop: 16,
+    marginTop: 20,
     fontSize: 15,
-    lineHeight: 22,
-    color: "#555",
+    lineHeight: 24,
+    color: COLORS.textSecondary,
   },
+
   dotsContainer: {
     flexDirection: "row",
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 14,
   },
+
   dot: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: "#ccc",
+    backgroundColor: "#D1D5DB",
     marginHorizontal: 4,
   },
+
   activeDot: {
-    backgroundColor: "#007bff",
+    backgroundColor: COLORS.primary,
     width: 8,
     height: 8,
   },
+
   bottomBar: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#fff",
-    padding: 16,
+    backgroundColor: COLORS.surface,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
     borderTopWidth: 1,
-    borderColor: "#eee",
+    borderColor: "#F1F5F9",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: -4 },
+    elevation: 15,
   },
+
   bottomButton: {
-    backgroundColor: "#007bff",
-    padding: 16,
-    borderRadius: 10,
+    backgroundColor: COLORS.primary,
+    paddingVertical: 18,
+    borderRadius: 14,
     alignItems: "center",
   },
+
   bottomButtonText: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "700",
     fontSize: 16,
+    letterSpacing: 0.5,
   },
+
   bottomQtyContainer: {
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#007bff",
-    borderRadius: 10,
-    paddingVertical: 12,
+    backgroundColor: COLORS.primary,
+    borderRadius: 14,
+    paddingVertical: 14,
+    paddingHorizontal: 24,
   },
+
   qtyButton: {
-    fontSize: 24,
+    fontSize: 26,
     color: "#fff",
-    paddingHorizontal: 20,
+    fontWeight: "600",
   },
+
   qtyText: {
     fontSize: 18,
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
+
   similarTitle: {
-    marginTop: 30,
-    fontSize: 18,
-    fontWeight: "bold",
-    paddingHorizontal: 16,
+    marginTop: 40,
+    fontSize: 20,
+    fontWeight: "700",
+    paddingHorizontal: 20,
+    color: COLORS.textPrimary,
   },
+
   similarCard: {
-    width: 150,
-    marginRight: 12,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 8,
-    elevation: 3,
+    width: 160,
+    marginRight: 16,
+    backgroundColor: COLORS.surface,
+    borderRadius: 18,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 4,
   },
+
   similarImage: {
     width: "100%",
-    height: 120,
-    borderRadius: 10,
+    height: 130,
+    borderRadius: 14,
   },
+
   similarName: {
-    marginTop: 6,
+    marginTop: 8,
     fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.textPrimary,
   },
+
   similarPrice: {
-    marginTop: 4,
-    fontWeight: "bold",
-    color: "#007bff",
+    marginTop: 6,
+    fontWeight: "700",
+    fontSize: 15,
+    color: COLORS.primary,
   },
+
   detailsWishlist: {
     position: "absolute",
-    top: 40,
+    top: 50,
     right: 20,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    padding: 10,
+    borderRadius: 30,
   },
 });

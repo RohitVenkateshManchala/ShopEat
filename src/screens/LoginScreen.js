@@ -91,52 +91,57 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: "center",
     },
+
     container: {
         flex: 1,
-        // justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-end",
     },
+
     card: {
-        marginTop: 200,
-        borderTopLeftRadius: 150,
         width: "100%",
-        height: "75%",
-        backgroundColor: 'rgba(255, 255, 255, 1)',
-        padding: 20,
-        borderRadius: 12,
-        elevation: 5,
+        backgroundColor: "#ffffff",
+        paddingHorizontal: 24,
+        paddingVertical: 40,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
     },
+
+    content: {
+        width: "100%",
+    },
+
     title: {
-        fontSize: 22,
-        fontWeight: "bold",
-        marginBottom: 20,
+        fontSize: 26,
+        fontWeight: "700",
+        marginBottom: 30,
         textAlign: "center",
     },
+
     input: {
-        borderWidth: 1,
-        borderColor: "#ddd",
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 15,
+        backgroundColor: "#f5f5f5",
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 16,
     },
+
     button: {
-        backgroundColor: "#007bff",
-        padding: 15,
-        borderRadius: 8,
+        backgroundColor: "#000",
+        padding: 18,
+        borderRadius: 14,
         alignItems: "center",
+        marginTop: 10,
     },
+
     buttonText: {
         color: "#fff",
-        fontWeight: "bold",
+        fontWeight: "600",
+        fontSize: 16,
     },
+
     error: {
-        color: "red",
+        color: "#ff4d4f",
         marginBottom: 10,
         textAlign: "center",
     },
-    content: {
-        marginTop: 100,
-    }
 });

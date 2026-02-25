@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStack from "./HomeStack";
 import ProfileScreen from "../screens/ProfileScreen";
 import CartScreen from "../screens/CartScreen";
+import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,9 @@ export default function MainTabs() {
           } else if (route.name === "Cart") {
             iconName = focused ? "cart" : "cart-outline";
           }
+          else if (route.name === "Orders") {
+            iconName = focused ? "receipt" : "receipt-outline";
+          }
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -32,6 +36,7 @@ export default function MainTabs() {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen name="Orders" component={OrderHistoryScreen} />
     </Tab.Navigator>
   );
 }

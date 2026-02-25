@@ -4,14 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
+import { COLORS } from "../theme/colors";
+import { SPACING } from "../theme/spacing";
+import { TYPOGRAPHY } from "../theme/typography";
 
 export default function ProductCard({ item, allProducts }) {
     const { cartItems, addToCart, increaseQty, decreaseQty } =
         useContext(CartContext);
 
-    const { isInWishlist, toggleWishlist } = useContext(WishlistContext);
-
-    const inWishlist = isInWishlist(item.id);
+    const { isInWishlist, toggleWishlist } =
+        useContext(WishlistContext);
 
     const navigation = useNavigation();
 
@@ -19,51 +21,70 @@ export default function ProductCard({ item, allProducts }) {
         (cartItem) => cartItem.id === item.id
     );
 
+    const inWishlist = isInWishlist(item.id);
+
     return (
         <TouchableOpacity
+            activeOpacity={0.9}
             style={styles.card}
             onPress={() =>
                 navigation.navigate("ProductDetails", {
                     product: item,
-                    allProducts: allProducts,
+                    allProducts,
                 })
             }
         >
-            <Image
-                source={{ uri: item.thumbnail }}
-                style={styles.image}
-            />
-            <TouchableOpacity
-                style={styles.wishlistIcon}
-                onPress={(e) => {
-                    e.stopPropagation();
-                    toggleWishlist(item);
-                }}
-            >
-                <Ionicons
-                    name={inWishlist ? "heart" : "heart-outline"}
-                    size={22}
-                    color={inWishlist ? "red" : "#000"}
+            {/* Image Section */}
+            <View style={styles.imageWrapper}>
+                <Image
+                    source={{ uri: item.thumbnail }}
+                    style={styles.image}
                 />
-            </TouchableOpacity>
+
+                {/* Wishlist */}
+                <TouchableOpacity
+                    style={styles.wishlistIcon}
+                    onPress={(e) => {
+                        e.stopPropagation();
+                        toggleWishlist(item);
+                    }}
+                >
+                    <Ionicons
+                        name={inWishlist ? "heart" : "heart-outline"}
+                        size={18}
+                        color={inWishlist ? COLORS.primary : COLORS.textSecondary}
+                    />
+                </TouchableOpacity>
+            </View>
+
+            {/* Info Section */}
             <View style={styles.infoContainer}>
-                <Text style={styles.title} numberOfLines={1}>
+                <Text
+                    style={styles.title}
+                    numberOfLines={1}
+                >
                     {item.title}
                 </Text>
 
-                <Text style={styles.price}>₹ {item.price}</Text>
+                <Text style={styles.price}>
+                    ₹ {item.price}
+                </Text>
 
-                <Text style={styles.rating}>⭐ {item.rating}</Text>
+                <Text style={styles.rating}>
+                    ⭐ {item.rating}
+                </Text>
 
                 {!existingItem ? (
                     <TouchableOpacity
-                        style={styles.cartButton}
+                        style={styles.addButton}
                         onPress={(e) => {
-                            e.stopPropagation(); // Prevent navigation
+                            e.stopPropagation();
                             addToCart(item);
                         }}
                     >
-                        <Ionicons name="cart-outline" size={24} color="#007bff" />
+                        <Text style={styles.addButtonText}>
+                            Add to Cart
+                        </Text>
                     </TouchableOpacity>
                 ) : (
                     <View style={styles.qtyContainer}>
@@ -98,65 +119,92 @@ export default function ProductCard({ item, allProducts }) {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: "#fff",
-        borderRadius: 12,
-        overflow: "hidden",
-        elevation: 4,
-        marginBottom: 16,
         flex: 1,
-        marginHorizontal: 8,
+        backgroundColor: COLORS.surface,
+        borderRadius: 18,
+        marginBottom: SPACING.lg,
+        marginHorizontal: SPACING.sm,
+        overflow: "hidden",
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 20,
+        shadowOffset: { width: 0, height: 10 },
+        elevation: 8,
     },
+
+    imageWrapper: {
+        position: "relative",
+    },
+
     image: {
         width: "100%",
-        height: 140,
+        height: 160,
     },
-    infoContainer: {
-        padding: 12,
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: "bold",
-    },
-    price: {
-        marginTop: 4,
-        fontSize: 15,
-        color: "#007bff",
-    },
-    rating: {
-        marginTop: 4,
-        fontSize: 14,
-        color: "#888",
-    },
-    cartButton: {
-        position: "absolute",
-        top: 50,
-        right: 10,
-        left: 100,
-    },
-    qtyContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        position: "absolute",
-        top: 50,
-        right: 10,
-        left: 80,
-    },
-    qtyButton: {
-        fontSize: 20,
-        color: "#007bff",
-        paddingHorizontal: 10,
-    },
-    qtyText: {
-        fontSize: 16,
-        marginHorizontal: 5,
-    },
+
     wishlistIcon: {
         position: "absolute",
-        top: 10,
-        right: 10,
-        backgroundColor: "#fff",
-        padding: 6,
+        top: 12,
+        right: 12,
+        backgroundColor: COLORS.background,
+        padding: 8,
         borderRadius: 20,
-        elevation: 4,
+    },
+
+    infoContainer: {
+        padding: SPACING.md,
+    },
+
+    title: {
+        ...TYPOGRAPHY.body,
+        fontWeight: "600",
+        color: COLORS.textPrimary,
+    },
+
+    price: {
+        marginTop: 6,
+        ...TYPOGRAPHY.subtitle,
+        color: COLORS.primary,
+    },
+
+    rating: {
+        marginTop: 4,
+        fontSize: 13,
+        color: COLORS.textSecondary,
+    },
+
+    addButton: {
+        marginTop: SPACING.md,
+        backgroundColor: COLORS.primary,
+        paddingVertical: 10,
+        borderRadius: 10,
+        alignItems: "center",
+    },
+
+    addButtonText: {
+        color: COLORS.background,
+        fontWeight: "600",
+        fontSize: 14,
+    },
+
+    qtyContainer: {
+        marginTop: SPACING.md,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: COLORS.primary,
+        borderRadius: 10,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+    },
+
+    qtyButton: {
+        fontSize: 18,
+        color: COLORS.background,
+    },
+
+    qtyText: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: COLORS.background,
     },
 });
