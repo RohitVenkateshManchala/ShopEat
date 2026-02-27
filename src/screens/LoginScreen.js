@@ -15,7 +15,7 @@ import { AuthContext } from "../context/AuthContext";
 export default function LoginScreen() {
     const { login } = useContext(AuthContext);
 
-    const [email, setEmail] = useState("");
+    const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -23,10 +23,11 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         setError("");
 
-        if (!email || !password) {
-            setError("Please enter both email and password");
+        if (!identifier || !password) {
+            setError("Please enter username/email and password");
             return;
         }
+
         if (password.length < 6) {
             setError("Password must be at least 6 characters");
             return;
@@ -34,30 +35,29 @@ export default function LoginScreen() {
 
         setLoading(true);
 
-
         setTimeout(() => {
-            login();
+            login(identifier);
             setLoading(false);
         }, 1500);
-    }
+    };
+
     return (
         <ImageBackground
             source={require("../assets/images/background_image.jpg")}
             style={styles.background}
         >
-
-
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={styles.container}>
+                style={styles.container}
+            >
                 <View style={styles.card}>
                     <View style={styles.content}>
                         <Text style={styles.title}>Welcome Back 👋</Text>
 
                         <TextInput
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
+                            placeholder="Username or Email"
+                            value={identifier}
+                            onChangeText={setIdentifier}
                             style={styles.input}
                             autoCapitalize="none"
                         />
@@ -69,6 +69,7 @@ export default function LoginScreen() {
                             style={styles.input}
                             secureTextEntry
                         />
+
                         {error ? <Text style={styles.error}>{error}</Text> : null}
 
                         <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -79,12 +80,9 @@ export default function LoginScreen() {
                             )}
                         </TouchableOpacity>
                     </View>
-
                 </View>
-
             </KeyboardAvoidingView>
         </ImageBackground>
-
     );
 }
 

@@ -20,8 +20,7 @@ export default function ProfileScreen({ navigation }) {
     email: "rohit@email.com",
   };
 
-  const logout = useContext(AuthContext)
-
+  const { logout } = useContext(AuthContext);
   const MenuItem = ({ icon, title, onPress }) => (
     <TouchableOpacity style={styles.menuItem} onPress={onPress}>
       <View style={styles.menuLeft}>
@@ -35,7 +34,7 @@ export default function ProfileScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        
+
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.avatar}>
@@ -62,24 +61,27 @@ export default function ProfileScreen({ navigation }) {
           <MenuItem
             icon="location-outline"
             title="Address"
-            onPress={() => {}}
+            onPress={() => { }}
           />
 
           <MenuItem
             icon="card-outline"
             title="Payment Methods"
-            onPress={() => {}}
+            onPress={() => { }}
           />
 
           <MenuItem
             icon="settings-outline"
             title="Settings"
-            onPress={() => {}}
+            onPress={() => { }}
           />
         </View>
 
         {/* Logout */}
-        <TouchableOpacity style={styles.logoutButton} onPress={()=>{logout}}>
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={logout}
+        >
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
 
