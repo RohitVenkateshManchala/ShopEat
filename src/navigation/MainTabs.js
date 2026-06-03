@@ -1,12 +1,26 @@
+// src/navigation/MainTabs.js
+
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeStack from "./HomeStack";
-import FoodStack from "./FoodStack";               
-import ProfileScreen from "../screens/ProfileScreen";
-import CartScreen from "../screens/CartScreen";
-import OrderHistoryScreen from "../screens/OrderHistoryScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { COLORS } from "../theme/colors";
+import HomeStack from "./HomeStack";
+import FoodStack from "./FoodStack";
+import SearchScreen from "../screens/SearchScreen";
+import CartScreen from "../screens/CartScreen";
+import WishlistScreen from "../screens/WishlistScreen";
+import OrderHistoryScreen from "../screens/OrderHistoryScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+
+const TAB_ICONS = {
+  Home:     ["home",        "home-outline"],
+  Food:     ["restaurant",  "restaurant-outline"],
+  Search:   ["search",      "search-outline"],
+  Cart:     ["cart",        "cart-outline"],
+  Wishlist: ["heart",       "heart-outline"],
+  Orders:   ["receipt",     "receipt-outline"],
+  Profile:  ["person",      "person-outline"],
+};
 
 const Tab = createBottomTabNavigator();
 
@@ -15,30 +29,27 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: COLORS.primary,     
+        tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: "gray",
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Food") {        
-            iconName = focused ? "restaurant" : "restaurant-outline";
-          } else if (route.name === "Cart") {
-            iconName = focused ? "cart" : "cart-outline";
-          } else if (route.name === "Orders") {
-            iconName = focused ? "receipt" : "receipt-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person-outline";
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          const [active, inactive] = TAB_ICONS[route.name] ?? ["help", "help-outline"];
+          return (
+            <Ionicons
+              name={focused ? active : inactive}
+              size={size}
+              color={color}
+            />
+          );
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Food" component={FoodStack} />
-      <Tab.Screen name="Cart" component={CartScreen} />
-      <Tab.Screen name="Orders" component={OrderHistoryScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Home"     component={HomeStack} />
+      <Tab.Screen name="Food"     component={FoodStack} />
+      <Tab.Screen name="Search"   component={SearchScreen} />
+      <Tab.Screen name="Cart"     component={CartScreen} />
+      <Tab.Screen name="Wishlist" component={WishlistScreen} />
+      <Tab.Screen name="Orders"   component={OrderHistoryScreen} />
+      <Tab.Screen name="Profile"  component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
